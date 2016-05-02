@@ -1,4 +1,4 @@
-package com.example.taqtile.aplicativoonboard;
+package com.example.taqtile.apponboard;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
