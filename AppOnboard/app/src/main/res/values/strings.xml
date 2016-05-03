@@ -1,4 +1,8 @@
 <resources>
     <string name="app_name">AppOnboard</string>
     <string name="teste">teste</string>
+    <string name="lbl_id">ID:</string>
+    <string name="lbl_first_name">First Name:</string>
+    <string name="lbl_last_name">Last Name:</string>
+    <string name="lbl_avatar">Avatar:</string>
 </resources>
