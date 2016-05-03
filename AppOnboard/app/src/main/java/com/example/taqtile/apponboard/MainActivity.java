@@ -2,16 +2,130 @@ package com.example.taqtile.apponboard;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.DefaultItemAnimator;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.View;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
     private static final String TAG = "MainActivity";
+
+    private List<User> mUsersList = new ArrayList<>();
+    private RecyclerView mRecyclerView;
+    private UsersAdapter mAdapter;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         Log.d(TAG, "Mensagem de Log");
+
+        configurarRecyclerView();
+
+        prepareUserData();
+
     }
+
+    private void configurarRecyclerView() {
+        mRecyclerView = (RecyclerView) findViewById(R.id.recycler_view);
+
+        mAdapter = new UsersAdapter(mUsersList);
+        RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
+        mRecyclerView.setLayoutManager(mLayoutManager);
+        mRecyclerView.setItemAnimator(new DefaultItemAnimator());
+        mRecyclerView.addItemDecoration(new SimpleDividerItemDecoration(this));
+        mRecyclerView.setAdapter(mAdapter);
+
+    }
+
+    private void prepareUserData() {
+        User user = new User();
+        user.setFirstName("Daniel");
+        user.setLastName("Rizzuto");
+        user.setId(0);
+        mUsersList.add(user);
+
+        user = new User();
+        user.setFirstName("Daniel");
+        user.setLastName("Nakasato");
+        user.setId(1);
+        mUsersList.add(user);
+
+        user = new User();
+        user.setFirstName("Roberto");
+        user.setLastName("Rizzuto");
+        user.setId(2);
+        mUsersList.add(user);
+
+        user = new User();
+        user.setFirstName("Laura");
+        user.setLastName("Regina");
+        user.setId(3);
+        mUsersList.add(user);
+
+        user = new User();
+        user.setFirstName("Rafael");
+        user.setLastName("Trigo");
+        user.setId(4);
+        mUsersList.add(user);
+
+        user = new User();
+        user.setFirstName("Daniel");
+        user.setLastName("Lobato");
+        user.setId(5);
+        mUsersList.add(user);
+
+        user = new User();
+        user.setFirstName("Roberta");
+        user.setLastName("Truppa");
+        user.setId(6);
+        mUsersList.add(user);
+
+        user = new User();
+        user.setFirstName("Arnaldo");
+        user.setLastName("Coelho");
+        user.setId(7);
+        mUsersList.add(user);
+
+        user = new User();
+        user.setFirstName("Bruno");
+        user.setLastName("Fagundes");
+        user.setId(8);
+        mUsersList.add(user);
+
+        user = new User();
+        user.setFirstName("Monteiro");
+        user.setLastName("Lobato");
+        user.setId(9);
+        mUsersList.add(user);
+
+        user = new User();
+        user.setFirstName("Zé");
+        user.setLastName("Carioca");
+        user.setId(10);
+        mUsersList.add(user);
+
+        user = new User();
+        user.setFirstName("Amanda");
+        user.setLastName("Trimer");
+        user.setId(11);
+        mUsersList.add(user);
+
+        user = new User();
+        user.setFirstName("Paloma");
+        user.setLastName("Oliveira");
+        user.setId(12);
+        mUsersList.add(user);
+
+        mAdapter.notifyDataSetChanged();
+
+
+    }
+
 }
