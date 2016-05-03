@@ -5,4 +5,5 @@
     <string name="lbl_first_name">First Name:</string>
     <string name="lbl_last_name">Last Name:</string>
     <string name="lbl_avatar">Avatar:</string>
+    <string name="lbl_botao_voltar">Voltar Para Lista</string>
 </resources>
