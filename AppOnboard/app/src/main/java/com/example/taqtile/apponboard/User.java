@@ -1,5 +1,7 @@
 package com.example.taqtile.apponboard;
 
+import java.io.Serializable;
+
 /**
  * Created by taqtile on 5/2/16.
  */
