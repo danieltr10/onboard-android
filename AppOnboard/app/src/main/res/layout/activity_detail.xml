@@ -57,17 +57,17 @@
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:text="Medium Text"
-        android:id="@+id/textViewId"
+        android:id="@+id/text_id"
         android:layout_alignTop="@+id/textView"
-        android:layout_alignLeft="@+id/textViewFirstName"
-        android:layout_alignStart="@+id/textViewFirstName" />
+        android:layout_alignLeft="@+id/text_first_name"
+        android:layout_alignStart="@+id/text_first_name" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:text="Medium Text"
-        android:id="@+id/textViewFirstName"
+        android:id="@+id/text_first_name"
         android:layout_alignTop="@+id/textView2"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true" />
@@ -77,7 +77,7 @@
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:text="Medium Text"
-        android:id="@+id/textViewLastName"
+        android:id="@+id/text_last_name"
         android:layout_below="@+id/textView2"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true" />
@@ -87,7 +87,7 @@
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:text="Medium Text"
-        android:id="@+id/textViewAvatar"
+        android:id="@+id/text_avatar"
         android:layout_alignTop="@+id/textView4"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true" />

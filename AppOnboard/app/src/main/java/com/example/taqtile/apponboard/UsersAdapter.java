@@ -5,11 +5,7 @@ package com.example.taqtile.apponboard;
  * Created by taqtile on 5/3/16.
  */
 
-import android.content.Intent;
-import android.nfc.Tag;
-import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.*;
 import android.widget.*;
 
@@ -19,12 +15,11 @@ public class UsersAdapter extends RecyclerView.Adapter<UsersAdapter.MyViewHolder
 
     private List<User> mUsersList;
     private static final String TAG = "UsersAdapter";
+    private UserAdapterListener mListener ;
 
     public interface UserAdapterListener {
         public void onItemClicked(int position);
     }
-
-    private UserAdapterListener mListener ;
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
         public TextView mUserId, mUserName;
@@ -33,9 +28,9 @@ public class UsersAdapter extends RecyclerView.Adapter<UsersAdapter.MyViewHolder
         public MyViewHolder(View v) {
             super(v);
 
-            mUserId = (TextView) v.findViewById(R.id.mUserId);
-            mUserName = (TextView) v.findViewById(R.id.mUserName);
-            mCellContainer = (RelativeLayout) v.findViewById(R.id.mCellContainer);
+            mUserId = (TextView) v.findViewById(R.id.user_id);
+            mUserName = (TextView) v.findViewById(R.id.user_name);
+            mCellContainer = (RelativeLayout) v.findViewById(R.id.cell_container);
         }
 
     }
