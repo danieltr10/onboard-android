@@ -8,11 +8,12 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
+import android.widget.RelativeLayout;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements UsersAdapter.UserAdapterListener{
 
     private static final String TAG = "MainActivity";
 
@@ -38,30 +39,13 @@ public class MainActivity extends AppCompatActivity {
     private void configurarRecyclerView() {
         mRecyclerView = (RecyclerView) findViewById(R.id.recycler_view);
 
-        mAdapter = new UsersAdapter(mUsersList);
+        mAdapter = new UsersAdapter(mUsersList, this);
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
         mRecyclerView.setLayoutManager(mLayoutManager);
         mRecyclerView.setItemAnimator(new DefaultItemAnimator());
         mRecyclerView.addItemDecoration(new SimpleDividerItemDecoration(this));
         mRecyclerView.setAdapter(mAdapter);
 
-        mRecyclerView.addOnItemTouchListener(
-                new RecyclerItemClickListener(this.getApplicationContext(), new RecyclerItemClickListener.OnItemClickListener() {
-                    @Override public void onItemClick(View view, int position) {
-
-                        Intent intent = new Intent(view.getContext(), DetailActivity.class);
-                        Bundle extras = new Bundle();
-
-                        extras.putString("USER_ID", String.valueOf(mUsersList.get(position).getId()));
-                        extras.putString("USER_FIRST_NAME", mUsersList.get(position).getFirstName());
-                        extras.putString("USER_LAST_NAME", mUsersList.get(position).getLastName());
-                        extras.putString("USER_AVATAR", mUsersList.get(position).getAvatar());
-
-                        intent.putExtras(extras);
-                        startActivity(intent);
-                    }
-                })
-        );
 
     }
 
@@ -160,4 +144,20 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    @Override
+    public void onItemClicked(int position) {
+
+
+        Intent intent = new Intent(this, DetailActivity.class);
+        Bundle extras = new Bundle();
+
+        extras.putString("USER_ID", String.valueOf(mUsersList.get(position).getId()));
+        extras.putString("USER_FIRST_NAME", mUsersList.get(position).getFirstName());
+        extras.putString("USER_LAST_NAME", mUsersList.get(position).getLastName());
+        extras.putString("USER_AVATAR", mUsersList.get(position).getAvatar());
+
+        intent.putExtras(extras);
+        startActivity(intent);
+
+    }
 }
