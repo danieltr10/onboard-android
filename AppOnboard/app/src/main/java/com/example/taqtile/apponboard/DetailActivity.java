@@ -21,7 +21,7 @@ public class DetailActivity extends AppCompatActivity {
     private TextView mTextViewId;
     private TextView mTextViewFirstName;
     private TextView mTextViewLastName;
-    private ImageView mImagemAvatar;
+    private ImageView mImageAvatar;
     private Button mButtonBack;
     private String mAvatarURL;
     private Bitmap mAvatarImage;
@@ -44,7 +44,7 @@ public class DetailActivity extends AppCompatActivity {
         mTextViewFirstName = (TextView) findViewById(R.id.text_first_name);
         mTextViewLastName = (TextView) findViewById(R.id.text_last_name);
 
-        mImagemAvatar = (ImageView) findViewById(R.id.image_avatar);
+        mImageAvatar = (ImageView) findViewById(R.id.image_avatar);
 
         mButtonBack = (Button) findViewById(R.id.btn_back);
 
@@ -69,6 +69,7 @@ public class DetailActivity extends AppCompatActivity {
         mTextViewLastName.setText(extras.getString("USER_LAST_NAME"));
 
         mAvatarURL = extras.getString("USER_AVATAR");
+
         new ImageLoaderClass().execute(mAvatarURL);
 
     }
@@ -88,7 +89,7 @@ public class DetailActivity extends AppCompatActivity {
         }
         protected void onPostExecute(Bitmap image) {
             if(image != null){
-                mImagemAvatar.setImageBitmap(image);
+                mImageAvatar.setImageBitmap(image);
             }
         }
     }
