@@ -11,6 +11,7 @@ import android.util.Log;
 import java.util.ArrayList;
 import java.util.List;
 
+
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -34,6 +35,14 @@ public class MainActivity extends AppCompatActivity implements UsersAdapter.User
         setContentView(R.layout.activity_main);
         Log.d(TAG, "Mensagem de Log");
 
+        getUsersOnPage(1);
+
+        configurarRecyclerView();
+
+    }
+
+    private void getUsersOnPage(int pageNumber) {
+
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(BASE_URL)
                 .addConverterFactory(GsonConverterFactory.create())
@@ -41,23 +50,17 @@ public class MainActivity extends AppCompatActivity implements UsersAdapter.User
 
         UsersService service = retrofit.create(UsersService.class);
 
-        Call<UsersWrapper> usersCall = service.getUsers();
+        Call<UsersWrapper> usersCall = service.getUsers(pageNumber);
 
         usersCall.enqueue(new Callback<UsersWrapper>() {
             @Override
             public void onResponse(Call<UsersWrapper> call, Response<UsersWrapper> response) {
 
                 if(response.isSuccessful()) {
+
                     UsersWrapper users = response.body();
-
-                    User user = new User();
-                    user.setFirst_name(users.getData().get(0).getFirst_name());
-                    user.setLast_name(users.getData().get(0).getLast_name());
-                    user.setId(users.getData().get(0).getId());
-                    user.setAvatar(users.getData().get(0).getAvatar());
-                    mUsersList.add(user);
-
                     mUsersList = users.getData();
+
                     mAdapter.setmUsersList(mUsersList);
 
                     mAdapter.notifyDataSetChanged();
@@ -71,12 +74,6 @@ public class MainActivity extends AppCompatActivity implements UsersAdapter.User
 
             }
         });
-
-
-        configurarRecyclerView();
-
-
-
 
     }
 
@@ -93,103 +90,6 @@ public class MainActivity extends AppCompatActivity implements UsersAdapter.User
 
     }
 
-    private void prepareUserData() {
-
-
-
-
-        User user = new User();
-        user.setFirst_name("Daniel");
-        user.setLast_name("Rizzuto");
-        user.setId(0);
-        user.setAvatar("www.avatar.com/" + user.getFirst_name() + user.getLast_name() + ".png");
-        mUsersList.add(user);
-
-        user = new User();
-        user.setFirst_name("Daniel");
-        user.setLast_name("Nakasato");
-        user.setId(1);
-        user.setAvatar("www.avatar.com/" + user.getFirst_name() + user.getLast_name() + ".png");
-        mUsersList.add(user);
-
-        user = new User();
-        user.setFirst_name("Roberto");
-        user.setLast_name("Rizzuto");
-        user.setId(2);
-        user.setAvatar("www.avatar.com/" + user.getFirst_name() + user.getLast_name() + ".png");
-        mUsersList.add(user);
-
-        user = new User();
-        user.setFirst_name("Laura");
-        user.setLast_name("Regina");
-        user.setId(3);
-        user.setAvatar("www.avatar.com/" + user.getFirst_name() + user.getLast_name() + ".png");
-        mUsersList.add(user);
-
-        user = new User();
-        user.setFirst_name("Rafael");
-        user.setLast_name("Trigo");
-        user.setId(4);
-        user.setAvatar("www.avatar.com/" + user.getFirst_name() + user.getLast_name() + ".png");
-        mUsersList.add(user);
-
-        user = new User();
-        user.setFirst_name("Daniel");
-        user.setLast_name("Lobato");
-        user.setId(5);
-        user.setAvatar("www.avatar.com/" + user.getFirst_name() + user.getLast_name() + ".png");
-        mUsersList.add(user);
-
-        user = new User();
-        user.setFirst_name("Roberta");
-        user.setLast_name("Truppa");
-        user.setId(6);
-        user.setAvatar("www.avatar.com/" + user.getFirst_name() + user.getLast_name() + ".png");
-        mUsersList.add(user);
-
-        user = new User();
-        user.setFirst_name("Arnaldo");
-        user.setLast_name("Coelho");
-        user.setId(7);
-        user.setAvatar("www.avatar.com/" + user.getFirst_name() + user.getLast_name() + ".png");
-        mUsersList.add(user);
-
-        user = new User();
-        user.setFirst_name("Bruno");
-        user.setLast_name("Fagundes");
-        user.setId(8);
-        user.setAvatar("www.avatar.com/" + user.getFirst_name() + user.getLast_name() + ".png");
-        mUsersList.add(user);
-
-        user = new User();
-        user.setFirst_name("Monteiro");
-        user.setLast_name("Lobato");
-        user.setId(9);
-        user.setAvatar("www.avatar.com/" + user.getFirst_name() + user.getLast_name() + ".png");
-        mUsersList.add(user);
-
-        user = new User();
-        user.setFirst_name("Zé");
-        user.setLast_name("Carioca");
-        user.setId(10);
-        user.setAvatar("www.avatar.com/" + user.getFirst_name() + user.getLast_name() + ".png");
-        mUsersList.add(user);
-
-        user = new User();
-        user.setFirst_name("Amanda");
-        user.setLast_name("Trimer");
-        user.setId(11);
-        user.setAvatar("www.avatar.com/" + user.getFirst_name() + user.getLast_name() + ".png");
-        mUsersList.add(user);
-
-        user = new User();
-        user.setFirst_name("Paloma");
-        user.setLast_name("Oliveira");
-        user.setId(12);
-        user.setAvatar("www.avatar.com/" + user.getFirst_name() + user.getLast_name() + ".png");
-        mUsersList.add(user);
-
-    }
 
     @Override
     public void onItemClicked(int position) {
