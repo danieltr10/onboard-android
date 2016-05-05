@@ -17,6 +17,10 @@ public class UsersAdapter extends RecyclerView.Adapter<UsersAdapter.MyViewHolder
     private static final String TAG = "UsersAdapter";
     private UserAdapterListener mListener ;
 
+    public void setmUsersList(List<User> mUsersList) {
+        this.mUsersList = mUsersList;
+    }
+
     public interface UserAdapterListener {
         public void onItemClicked(int position);
     }
@@ -53,7 +57,7 @@ public class UsersAdapter extends RecyclerView.Adapter<UsersAdapter.MyViewHolder
     public void onBindViewHolder(MyViewHolder holder, final int position) {
         User user = mUsersList.get(position);
         holder.mUserId.setText("ID: " + String.valueOf(user.getId()));
-        holder.mUserName.setText(user.getFirstName() + " " + user.getLastName());
+        holder.mUserName.setText(user.getFirst_name() + " " + user.getLast_name());
 
         holder.mCellContainer.setOnClickListener(new View.OnClickListener() {
             @Override
