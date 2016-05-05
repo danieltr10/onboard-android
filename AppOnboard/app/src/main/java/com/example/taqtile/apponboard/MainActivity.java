@@ -38,20 +38,21 @@ public class MainActivity extends AppCompatActivity implements UsersAdapter.User
 
         mUsersDatabase = new UsersDatabase(this);
 
+        getUsersOnPage(2);
+
         User user = new User();
-        user.setFirst_name("Daniel");
-        user.setLast_name("Rizzuto");
-        user.setId(3);
-        user.setAvatar("Avatar.png");
 
-        mUsersDatabase.addUser(user);
-
-        User user4 = new User();
-        user4 = mUsersDatabase.getUser(3);
-        getUsersOnPage(1);
+        user = mUsersDatabase.getUser(1);
 
         configurarRecyclerView();
 
+
+    }
+
+    private void saveUsersToDatabase() {
+        for (int i = 0; i < mUsersList.size(); i++) {
+            mUsersDatabase.addUser(mUsersList.get(i));
+        }
     }
 
     private void getUsersOnPage(int pageNumber) {
@@ -73,6 +74,8 @@ public class MainActivity extends AppCompatActivity implements UsersAdapter.User
 
                     UsersWrapper users = response.body();
                     mUsersList = users.getData();
+
+                    saveUsersToDatabase();
 
                     mAdapter.setmUsersList(mUsersList);
 

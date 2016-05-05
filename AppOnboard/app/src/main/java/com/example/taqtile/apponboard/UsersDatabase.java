@@ -17,7 +17,7 @@ import java.util.List;
 public class UsersDatabase extends SQLiteOpenHelper {
 
     private static final String TAG = "UsersDatabase";
-    private static final String DB_NAME = "Users.db";
+    private static final String DB_NAME = "database";
     private static final String TABLE_NAME = "users";
 
     public UsersDatabase(Context context) {
@@ -28,7 +28,7 @@ public class UsersDatabase extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase db) {
 
         try {
-            db.execSQL("CREATE TABLE " + TABLE_NAME + " (id INTEGER PRIMARY KEY, first_name TEXT not null, last_name TEXT not null, avatar TEXT not null");
+            db.execSQL("CREATE TABLE " + TABLE_NAME + " (id integer primary key, first_name TEXT NOT NULL, last_name TEXT NOT NULL, avatar TEXT NOT NULL)");
         }
         catch (SQLException e) {
             Log.d(TAG, e.getMessage());
@@ -39,64 +39,61 @@ public class UsersDatabase extends SQLiteOpenHelper {
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_NAME);
-        this.onCreate(db);
+        onCreate(db);
 
     }
 
-    public void addUser(User user) {
+    public Boolean addUser(User user) {
 
         SQLiteDatabase db = this.getWritableDatabase();
-        ContentValues values = new ContentValues();
+        ContentValues contentValues = new ContentValues();
 
-        values.put("id", user.getId());
-        values.put("first_name", user.getFirst_name());
-        values.put("last_name", user.getLast_name());
-        values.put("avatar", user.getAvatar());
+        contentValues.put("id", user.getId());
+        contentValues.put("first_name", user.getFirst_name());
+        contentValues.put("last_name", user.getLast_name());
+        contentValues.put("avatar", user.getAvatar());
+        db.insert(TABLE_NAME, null, contentValues);
 
-        db.insert(TABLE_NAME, null, values);
-        db.close();
+        return true;
     }
 
-    public List<User> getAllUsers() {
 
-        SQLiteDatabase db = this.getWritableDatabase();
-        List<User> usersList = new ArrayList<>();
+    public User getUser(int id){
 
-        Cursor cursor = db.rawQuery("SELECT * FROM " + TABLE_NAME, null);
 
-        if (cursor.getCount() > 0) {
+        ArrayList<User> usersArray = new ArrayList<User>();
 
-            if (cursor.moveToFirst()) {
-                do {
-                    User user = new User();
-                    user.setId(Integer.parseInt(cursor.getColumnName(cursor.getColumnIndex("id"))));
-                    user.setFirst_name(cursor.getColumnName(cursor.getColumnIndex("first_name")));
-                    user.setLast_name(cursor.getColumnName(cursor.getColumnIndex("last_name")));
-                    user.setAvatar(cursor.getColumnName(cursor.getColumnIndex("avatar")));
-                    usersList.add(user);
-                } while (cursor.moveToNext());
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor res =  db.rawQuery( "select * from " + TABLE_NAME + " where id = "+id+" ", null );
+        res.moveToFirst();
 
-                }
-
-        }
-
-        return usersList;
-
-    }
-
-    public User getUser(int id) {
-
-        SQLiteDatabase db = this.getWritableDatabase();
-
-        Cursor cursor = db.rawQuery("SELECT * FROM " + TABLE_NAME + " WHERE id=" + String.valueOf(id) + "", null);
-
-        User user = new User();
-        user.setId(Integer.parseInt(cursor.getColumnName(cursor.getColumnIndex("id"))));
-        user.setFirst_name(cursor.getColumnName(cursor.getColumnIndex("first_name")));
-        user.setLast_name(cursor.getColumnName(cursor.getColumnIndex("last_name")));
-        user.setAvatar(cursor.getColumnName(cursor.getColumnIndex("avatar")));
-
+            User user = new User();
+            user.setId(Integer.parseInt(res.getString(res.getColumnIndex("id"))));
+            user.setFirst_name(res.getString(res.getColumnIndex("first_name")));
+            user.setLast_name(res.getString(res.getColumnIndex("last_name")));
+            user.setAvatar(res.getString(res.getColumnIndex("avatar")));
         return user;
+    }
+
+    public ArrayList<User> getAllUsers()
+    {
+        ArrayList<User> usersArray = new ArrayList<User>();
+
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor res =  db.rawQuery( "select * from " + TABLE_NAME, null );
+        res.moveToFirst();
+
+        while(res.isAfterLast() == false){
+
+            User user = new User();
+            user.setId(Integer.parseInt(res.getString(res.getColumnIndex("id"))));
+            user.setFirst_name(res.getString(res.getColumnIndex("first_name")));
+            user.setLast_name(res.getString(res.getColumnIndex("last_name")));
+            user.setAvatar(res.getString(res.getColumnIndex("avatar")));
+            usersArray.add(user);
+            res.moveToNext();
+        }
+        return usersArray;
     }
 
     public void updateUser(int id, String first_name, String last_name, String avatar) {
@@ -104,18 +101,19 @@ public class UsersDatabase extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
 
+        contentValues.put("id", id);
         contentValues.put("first_name", first_name);
         contentValues.put("last_name", last_name);
         contentValues.put("avatar", avatar);
 
-        db.update(TABLE_NAME, contentValues, "id = ? ", new String[] { Integer.toString(id) } );
+        db.update(TABLE_NAME, contentValues, "id=" + id, null);
 
     }
 
-    public Integer deleteUser(int id) {
+    public void deleteUser(int id) {
         SQLiteDatabase db = this.getWritableDatabase();
 
-        return db.delete(TABLE_NAME, "int id = ?", new String[]{ Integer.toString(id)});
+        db.delete(TABLE_NAME, "id=" + id, null);
 
     }
 }
