@@ -18,18 +18,28 @@ public class DetailActivity extends AppCompatActivity {
 
     private static final String TAG = "MainActivity";
 
-    private TextView mTextViewId, mTextViewFirstName, mTextViewLastName;
+    private TextView mTextViewId;
+    private TextView mTextViewFirstName;
+    private TextView mTextViewLastName;
     private ImageView mImagemAvatar;
     private Button mButtonBack;
-
-    String avatarURL;
-    Bitmap avatarImage;
+    private String mAvatarURL;
+    private Bitmap mAvatarImage;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detail);
 
+        getViewElements();
+
+        populateView();
+
+        configureButtons();
+
+    }
+
+    private void getViewElements() {
         mTextViewId = (TextView) findViewById(R.id.text_id);
         mTextViewFirstName = (TextView) findViewById(R.id.text_first_name);
         mTextViewLastName = (TextView) findViewById(R.id.text_last_name);
@@ -38,6 +48,19 @@ public class DetailActivity extends AppCompatActivity {
 
         mButtonBack = (Button) findViewById(R.id.btn_back);
 
+    }
+
+    private void configureButtons() {
+        mButtonBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
+    }
+
+    private void populateView() {
+
         Intent intent = getIntent();
         Bundle extras = intent.getExtras();
 
@@ -45,17 +68,8 @@ public class DetailActivity extends AppCompatActivity {
         mTextViewFirstName.setText(extras.getString("USER_FIRST_NAME"));
         mTextViewLastName.setText(extras.getString("USER_LAST_NAME"));
 
-        avatarURL = extras.getString("USER_AVATAR");
-        new ImageLoaderClass().execute(avatarURL);
-
-        mButtonBack.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finish();
-            }
-        });
-
-
+        mAvatarURL = extras.getString("USER_AVATAR");
+        new ImageLoaderClass().execute(mAvatarURL);
 
     }
 
@@ -66,11 +80,11 @@ public class DetailActivity extends AppCompatActivity {
         }
         protected Bitmap doInBackground(String... args) {
             try {
-                avatarImage = BitmapFactory.decodeStream((InputStream)new URL(args[0]).getContent());
+                mAvatarImage = BitmapFactory.decodeStream((InputStream)new URL(args[0]).getContent());
             } catch (Exception e) {
                 e.printStackTrace();
             }
-            return avatarImage;
+            return mAvatarImage;
         }
         protected void onPostExecute(Bitmap image) {
             if(image != null){
