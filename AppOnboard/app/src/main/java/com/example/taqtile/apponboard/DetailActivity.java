@@ -54,7 +54,7 @@ public class DetailActivity extends AppCompatActivity {
         mButtonBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                finish();
+                onBackPressed();
             }
         });
     }
