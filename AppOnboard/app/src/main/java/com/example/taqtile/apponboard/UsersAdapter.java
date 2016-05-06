@@ -26,8 +26,9 @@ public class UsersAdapter extends RecyclerView.Adapter<UsersAdapter.MyViewHolder
     }
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
-        public TextView mUserId, mUserName;
-        public RelativeLayout mCellContainer;
+        private TextView mUserId;
+        private TextView mUserName;
+        private RelativeLayout mCellContainer;
 
         public MyViewHolder(View v) {
             super(v);
