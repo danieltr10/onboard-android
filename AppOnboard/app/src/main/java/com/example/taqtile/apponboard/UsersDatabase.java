@@ -3,8 +3,10 @@ package com.example.taqtile.apponboard;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
+import android.database.CursorIndexOutOfBoundsException;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteException;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
@@ -45,33 +47,45 @@ public class UsersDatabase extends SQLiteOpenHelper {
 
     public Boolean addUser(User user) {
 
-        SQLiteDatabase db = this.getWritableDatabase();
-        ContentValues contentValues = new ContentValues();
+        try {
+            SQLiteDatabase db = this.getWritableDatabase();
+            ContentValues contentValues = new ContentValues();
 
-        contentValues.put("id", user.getId());
-        contentValues.put("first_name", user.getFirst_name());
-        contentValues.put("last_name", user.getLast_name());
-        contentValues.put("avatar", user.getAvatar());
-        db.insert(TABLE_NAME, null, contentValues);
+            contentValues.put("id", user.getId());
+            contentValues.put("first_name", user.getFirst_name());
+            contentValues.put("last_name", user.getLast_name());
+            contentValues.put("avatar", user.getAvatar());
+            db.insert(TABLE_NAME, null, contentValues);
 
-        return true;
+            return true;
+        }
+        catch (SQLiteException e) {
+            Log.d(TAG, e.getMessage());
+
+            return false;
+        }
     }
 
 
     public User getUser(int id){
 
+        User user = new User();
+        try {
 
-        ArrayList<User> usersArray = new ArrayList<User>();
+            SQLiteDatabase db = this.getReadableDatabase();
+            Cursor res = db.rawQuery("select * from " + TABLE_NAME + " where id = " + id + " ", null);
+            res.moveToFirst();
 
-        SQLiteDatabase db = this.getReadableDatabase();
-        Cursor res =  db.rawQuery( "select * from " + TABLE_NAME + " where id = "+id+" ", null );
-        res.moveToFirst();
-
-            User user = new User();
             user.setId(Integer.parseInt(res.getString(res.getColumnIndex("id"))));
             user.setFirst_name(res.getString(res.getColumnIndex("first_name")));
             user.setLast_name(res.getString(res.getColumnIndex("last_name")));
             user.setAvatar(res.getString(res.getColumnIndex("avatar")));
+
+        }
+        catch (CursorIndexOutOfBoundsException e) {
+            Log.d(TAG, e.getMessage());
+        }
+
         return user;
     }
 
@@ -79,41 +93,69 @@ public class UsersDatabase extends SQLiteOpenHelper {
     {
         ArrayList<User> usersArray = new ArrayList<User>();
 
-        SQLiteDatabase db = this.getReadableDatabase();
-        Cursor res =  db.rawQuery( "select * from " + TABLE_NAME, null );
-        res.moveToFirst();
+        try {
 
-        while(res.isAfterLast() == false){
+            SQLiteDatabase db = this.getReadableDatabase();
+            Cursor res = db.rawQuery("select * from " + TABLE_NAME, null);
+            res.moveToFirst();
 
-            User user = new User();
-            user.setId(Integer.parseInt(res.getString(res.getColumnIndex("id"))));
-            user.setFirst_name(res.getString(res.getColumnIndex("first_name")));
-            user.setLast_name(res.getString(res.getColumnIndex("last_name")));
-            user.setAvatar(res.getString(res.getColumnIndex("avatar")));
-            usersArray.add(user);
-            res.moveToNext();
+            while (res.isAfterLast() == false) {
+
+                User user = new User();
+                user.setId(Integer.parseInt(res.getString(res.getColumnIndex("id"))));
+                user.setFirst_name(res.getString(res.getColumnIndex("first_name")));
+                user.setLast_name(res.getString(res.getColumnIndex("last_name")));
+                user.setAvatar(res.getString(res.getColumnIndex("avatar")));
+                usersArray.add(user);
+                res.moveToNext();
+            }
+        }
+        catch (SQLiteException e) {
+            Log.d(TAG, e.getMessage());
         }
         return usersArray;
     }
 
-    public void updateUser(int id, String first_name, String last_name, String avatar) {
+    public boolean updateUser(int id, String first_name, String last_name, String avatar) {
 
-        SQLiteDatabase db = this.getWritableDatabase();
-        ContentValues contentValues = new ContentValues();
+        try {
 
-        contentValues.put("id", id);
-        contentValues.put("first_name", first_name);
-        contentValues.put("last_name", last_name);
-        contentValues.put("avatar", avatar);
+            deleteUser(id);
 
-        db.update(TABLE_NAME, contentValues, "id=" + id, null);
+            User user = new User();
+            user.setId(id);
+            user.setFirst_name(first_name);
+            user.setLast_name(last_name);
+            user.setAvatar(avatar);
+
+            addUser(user);
+
+            return true;
+
+        }
+        catch (SQLiteException e) {
+
+            Log.d(TAG, e.getMessage());
+
+            return false;
+        }
 
     }
 
-    public void deleteUser(int id) {
-        SQLiteDatabase db = this.getWritableDatabase();
+    public boolean deleteUser(int id) {
 
-        db.delete(TABLE_NAME, "id=" + id, null);
+        try {
+
+            SQLiteDatabase db = this.getWritableDatabase();
+            db.delete(TABLE_NAME, "id=" + id, null);
+            return true;
+        }
+
+        catch (SQLiteException e) {
+            Log.d(TAG, e.getMessage());
+            return false;
+        }
+
 
     }
 }
