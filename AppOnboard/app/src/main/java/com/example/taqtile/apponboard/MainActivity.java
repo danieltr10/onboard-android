@@ -38,11 +38,7 @@ public class MainActivity extends AppCompatActivity implements UsersAdapter.User
 
         mUsersDatabase = new UsersDatabase(this);
 
-        getUsersOnPage(2);
-
-        User user = new User();
-
-        user = mUsersDatabase.getUser(1);
+        getUsersOnPage(3);
 
         configurarRecyclerView();
 

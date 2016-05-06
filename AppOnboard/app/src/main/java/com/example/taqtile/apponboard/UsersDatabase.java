@@ -48,16 +48,20 @@ public class UsersDatabase extends SQLiteOpenHelper {
     public Boolean addUser(User user) {
 
         try {
-            SQLiteDatabase db = this.getWritableDatabase();
-            ContentValues contentValues = new ContentValues();
+            User tempUser = new User();
+            if (getUser(user.getId())!=null) {
+                SQLiteDatabase db = this.getWritableDatabase();
+                ContentValues contentValues = new ContentValues();
 
-            contentValues.put("id", user.getId());
-            contentValues.put("first_name", user.getFirst_name());
-            contentValues.put("last_name", user.getLast_name());
-            contentValues.put("avatar", user.getAvatar());
-            db.insert(TABLE_NAME, null, contentValues);
+                contentValues.put("id", user.getId());
+                contentValues.put("first_name", user.getFirst_name());
+                contentValues.put("last_name", user.getLast_name());
+                contentValues.put("avatar", user.getAvatar());
+                db.insert(TABLE_NAME, null, contentValues);
 
-            return true;
+                return true;
+            }
+            return false;
         }
         catch (SQLiteException e) {
             Log.d(TAG, e.getMessage());
