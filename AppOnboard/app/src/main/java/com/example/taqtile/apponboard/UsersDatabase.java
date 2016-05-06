@@ -127,16 +127,16 @@ public class UsersDatabase extends SQLiteOpenHelper {
 
         try {
 
-            deleteUser(id);
+            SQLiteDatabase db = this.getWritableDatabase();
+            ContentValues content = new ContentValues();
 
-            User user = new User();
-            user.setId(id);
-            user.setFirst_name(first_name);
-            user.setLast_name(last_name);
-            user.setAvatar(avatar);
+            content.put("id", id);
+            content.put("first_name", first_name);
+            content.put("last_name", last_name);
+            content.put("avatar", avatar);
 
-            addUser(user);
-
+            db.update(TABLE_NAME, content, "id = " + id, null);
+            
             return true;
 
         }
