@@ -136,7 +136,7 @@ public class UsersDatabase extends SQLiteOpenHelper {
             content.put("avatar", avatar);
 
             db.update(TABLE_NAME, content, "id = " + id, null);
-            
+
             return true;
 
         }

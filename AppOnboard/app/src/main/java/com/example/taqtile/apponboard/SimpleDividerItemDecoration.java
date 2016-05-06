@@ -13,7 +13,7 @@ public class SimpleDividerItemDecoration extends RecyclerView.ItemDecoration {
     private Drawable mDivider;
 
     public SimpleDividerItemDecoration(Context context) {
-        mDivider = context.getDrawable(R.drawable.line_divider);
+        mDivider = context.getResources().getDrawable(R.drawable.line_divider);
     }
 
     @Override
