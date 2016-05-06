@@ -45,11 +45,14 @@ public class UsersDatabase extends SQLiteOpenHelper {
 
     }
 
+    public Boolean userExists(int id) {
+        return getUser(id).getFirst_name() != null;
+    }
+
     public Boolean addUser(User user) {
 
         try {
-            User tempUser = new User();
-            if (getUser(user.getId())!=null) {
+            if (!userExists(user.getId())) {
                 SQLiteDatabase db = this.getWritableDatabase();
                 ContentValues contentValues = new ContentValues();
 
