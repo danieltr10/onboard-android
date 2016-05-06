@@ -8,7 +8,11 @@ import java.util.List;
  */
 public class UsersWrapper {
 
-    private int page, per_page, total, total_pages;
+    private int page;
+    private int per_page;
+    private int total;
+    private int total_pages;
+
     private List<User> data = new ArrayList<User>();
 
     public UsersWrapper(int page, int per_page, int total, int total_pages, List<User> data) {

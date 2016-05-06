@@ -27,6 +27,7 @@ public class MainActivity extends AppCompatActivity implements UsersAdapter.User
     private List<User> mUsersList = new ArrayList<>();
     private RecyclerView mRecyclerView;
     private UsersAdapter mAdapter;
+    private UsersDatabase mUsersDatabase;
 
 
     @Override
@@ -35,10 +36,19 @@ public class MainActivity extends AppCompatActivity implements UsersAdapter.User
         setContentView(R.layout.activity_main);
         Log.d(TAG, "Mensagem de Log");
 
-        getUsersOnPage(1);
+        mUsersDatabase = new UsersDatabase(this);
+
+        getUsersOnPage(3);
 
         configurarRecyclerView();
 
+
+    }
+
+    private void saveUsersToDatabase() {
+        for (int i = 0; i < mUsersList.size(); i++) {
+            mUsersDatabase.addUser(mUsersList.get(i));
+        }
     }
 
     private void getUsersOnPage(int pageNumber) {
@@ -60,6 +70,8 @@ public class MainActivity extends AppCompatActivity implements UsersAdapter.User
 
                     UsersWrapper users = response.body();
                     mUsersList = users.getData();
+
+                    saveUsersToDatabase();
 
                     mAdapter.setmUsersList(mUsersList);
 
